@@ -818,6 +818,7 @@ const getAttendanceStudentListWithCounts = async (attendanceId: string) => {
       $match: {
         classId: attendance.classId,
         section: attendance.section,
+        isTerminated: false,
       },
     },
     {
