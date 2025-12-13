@@ -52,8 +52,9 @@ const createClassWithRoutines = async (payload: Partial<TClass>, user: TAuthUser
     const sectionString = sections;
 
 
-    const existingClasses = await Class.find({ schoolId, className: payload.className }).session(session);
-    if (existingClasses.length > 0) throw new Error('Class already exists for this level');
+    const existingClasses = await Class.find({ schoolId, className: payload.className?.trim() }).session(session);
+
+    if (existingClasses.length > 0) throw new Error('Class already exists for this School');
 
     // Create Class
     const newClass = await Class.create(
