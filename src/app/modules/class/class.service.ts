@@ -214,6 +214,9 @@ const getStudentsOfClasses = async (
     {
       schoolId: new mongoose.Types.ObjectId(String(findTeacher.schoolId)),
     },
+    {
+      isTerminated: false
+    }
   ];
 
   // Always match className if provided
@@ -240,7 +243,7 @@ const getStudentsOfClasses = async (
       {
         $match: {
           $and: matchConditions,
-        },
+        }
       },
       {
         $lookup: {

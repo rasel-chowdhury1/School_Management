@@ -49,13 +49,16 @@ const getTeachers = catchAsync(async (req, res) => {
 });
 
 const editSchool = catchAsync(async (req, res) => {
+
   const result = await SchoolService.editSchool(req.params.schoolId, req.body);
+  
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'School updated successfully',
     data: result,
   });
+
 });
 
 const deleteSchool = catchAsync(async (req, res) => {
@@ -142,6 +145,8 @@ const updateSchoolProfile = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
 
 const getSchoolProfile = catchAsync(async (req, res) => {
   const result = await SchoolService.getSchoolProfile(req.user as TAuthUser);

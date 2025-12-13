@@ -42,9 +42,14 @@ export async function createUserWithProfile<T>(
     uniquePhoneNumber = await UserService.uniquePhoneNumber(
       payload.phoneNumber,
     );
+
+      payload.data.adminPhone = payload.phoneNumber;
+
   }
 
   if (uniquePhoneNumber) throw new Error('Phone number already exists');
+
+
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -92,6 +97,8 @@ export async function createUserWithProfile<T>(
     );
 
     if (!updateUser) throw new Error('User not updated');
+
+
     await session.commitTransaction();
     session.endSession();
 

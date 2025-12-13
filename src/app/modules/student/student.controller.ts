@@ -182,11 +182,13 @@ const removeTermination = catchAsync(async (req, res) => {
   // removedBy will be the current user (teacher/admin)
   const removedBy = (req.user as TAuthUser).userId;
 
-  const result = await StudentService.removeTermination({
+  const result = await StudentService.removeTermination(req.user, {
     studentId,
     removedBy,
   });
 
+
+  console.log({result})
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

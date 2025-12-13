@@ -344,6 +344,8 @@ const editStudent = async (id: string, payload: any) => {
 
 const deleteStudent = async (id: string) => {
   const result = transactionWrapper(async (session) => {
+
+    
     const student = await Student.findByIdAndDelete(id, { session });
     if (!student) throw new Error('Student not found');
 
@@ -632,6 +634,7 @@ const terminateStudentByTeacher = async (user: any, payload: TerminateStudentPay
 // REMOVE TERMINATION
 // ==========================
 const removeTermination= async (user: any, payload: RemoveTerminationPayload) => {
+  
   const { studentId, removedBy } = payload;
 
   // Validate input
@@ -777,8 +780,8 @@ const removeSummoned = async (payload: RemoveTerminationPayload) => {
 
   if (history.length > 0) {
     const lastRecord = history[history.length - 1];
-    lastRecord.removedBy = removedByObjectId as any;
-    lastRecord.removedTime = new Date();
+    (lastRecord as any).removedBy = removedByObjectId as any;
+    (lastRecord as any).removedTime = new Date();
   }
 
   await student.save();
@@ -869,8 +872,8 @@ const getSpecificStudentReport = async (studentId: string) => {
 
   // 3. Fetch all attendance records for this month
   const attendanceRecords = await Attendance.find({
-    schoolId: new mongoose.Types.ObjectId(schoolId),
-    classId: new mongoose.Types.ObjectId(classId),
+    schoolId: new mongoose.Types.ObjectId(schoolId as any),
+    classId: new mongoose.Types.ObjectId(classId as any),
     section: section,
     date: { $gte: startOfMonth, $lte: endOfMonth },
   })
@@ -882,8 +885,8 @@ const getSpecificStudentReport = async (studentId: string) => {
     return {
       studentUid: (student?.userId as any)?.uid,
       studentId,
-      name: student.userId?.name || "",
-      image: student.userId?.image || "",
+      name: (student?.userId as any)?.name || "",
+      image: (student?.userId as any)?.image || "",
       totalSummoned: student.totalSummoned || 0,
       isTerminated: student.isTerminated || false,
       classId,

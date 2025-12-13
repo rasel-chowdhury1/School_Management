@@ -33,6 +33,7 @@ const getSchoolList = async (query: Record<string, unknown>) => {
       {
         $match: {
           role: USER_ROLE.school,
+          isDeleted: false,
         },
       },
 
@@ -109,7 +110,7 @@ const getSchoolList = async (query: Record<string, unknown>) => {
 };
 
 const getAllSchools = async () => {
-  const result = await School.find().sort({ createdAt: -1 });
+  const result = await School.find({isDeleted: false}).sort({ createdAt: -1 });
   return result;
 }
 
@@ -166,6 +167,7 @@ const editSchool = async (
   schoolId: string,
   payload: Partial<TSchool & { phoneNumber: string; name?: string }>,
 ) => {
+  payload.adminPhone = payload.phoneNumber;
   const result = transactionWrapper(async (session) => {
     const result = await School.findOneAndUpdate({ _id: schoolId }, payload, {
       new: true,
@@ -184,6 +186,8 @@ const editSchool = async (
 
 const deleteSchool = async (schoolId: string) => {
   const result = transactionWrapper(async (session) => {
+
+
     const result = await School.findByIdAndUpdate(schoolId,{isDeleted: true},{ session });
 
     if (!result) throw new Error('School not deleted');
@@ -668,6 +672,35 @@ const updateSchoolProfile = async (
   );
   return result;
 };
+const updateSchoolProfileByAdmin = async (
+  schoolId: string,
+  payload: Partial<TSchool>,
+) => {
+  if (payload.adminPhone) {
+    await User.findOneAndUpdate(
+      { phoneNumber: payload.adminPhone },
+      {
+        name: payload.adminName,
+        phoneNumber: payload.adminPhone,
+        role: USER_ROLE.school,
+        schoolId: schoolId,
+      },
+      {
+        upsert: true,
+        new: true,
+      },
+    );
+  }
+
+  const result = await School.findOneAndUpdate(
+    { _id: new mongoose.Types.ObjectId(schoolId) },
+    payload,
+    {
+      new: true,
+    },
+  );
+  return result;
+};
 
 const getSchoolProfile = async (user: TAuthUser) => {
   const result = await School.findOne({ _id: user.schoolId });
@@ -684,6 +717,7 @@ export const SchoolService = {
   getAllStudents,
   getResultOfStudents,
   updateSchoolProfile,
+  updateSchoolProfileByAdmin,
   getSchoolProfile,
   updateSchoolBlockStatus,
   updateSchoolActiveStatus

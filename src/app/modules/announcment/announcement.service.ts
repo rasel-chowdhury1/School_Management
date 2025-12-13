@@ -58,6 +58,8 @@ const createAnnouncement = async (
         ? allTeacher
         : allParents;
 
+  console.log("parents ===>>", allParents);
+
   // Send notifications to all receivers
   const notificationPromises = receivers.map(async (item) => {
     console.log('item ===>>>> ', item);

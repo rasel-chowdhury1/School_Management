@@ -179,6 +179,8 @@ import Conversation from '../conversation/conversation.model';
 
 const getTeacherHomePageOverview = async (user: TAuthUser) => {
 
+  console.log({user});
+
 const day = new Date().toLocaleString("en-US", {
   weekday: "long",
 }).toLowerCase();
@@ -196,12 +198,18 @@ today.setHours(0, 0, 0, 0);
     section: cls.section,
   }));
 
+  console.log({supervisorClasses})
+  
   const studentMatchFilter = classFilters.length ? { $or: classFilters } : { _id: null };
+
+  console.log("studentMatchFilter ===>>> ",{studentMatchFilter});
 
   const [totalSummoned, totalTerminated] = await Promise.all([
     Student.countDocuments({ ...studentMatchFilter, summoned: true }),
     Student.countDocuments({ ...studentMatchFilter, isTerminated: true }),
   ]);
+
+  console.log({totalSummoned, totalTerminated})
 
   // -----------------------------
   // TODAY'S CLASS USING CLASSROUTINE
