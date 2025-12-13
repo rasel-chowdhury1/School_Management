@@ -853,7 +853,7 @@ const getStudentHomePageOverview = async (user: TAuthUser) => {
     dayData.totalPeriods++;
 
     const isPresent = record.presentStudents.some(
-      (s) => s.studentId.toString() === studentId
+      (s) => (s as any).studentId.toString() === studentId
     );
 
     if (isPresent) dayData.presentPeriods++;

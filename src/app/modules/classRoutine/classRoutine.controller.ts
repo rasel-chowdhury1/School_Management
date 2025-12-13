@@ -249,8 +249,8 @@ const getTodayClassListByClassAndSection = catchAsync(async (req, res) => {
   const query = rest;
 
   const data = await ClassRoutineService.getTodayClassListByClassAndSection(
-    classId,
-    section,
+    classId as string,
+    section as string,
     query,
     schoolId
   );
@@ -271,7 +271,7 @@ const getClassScheduleByDay = catchAsync(async (req, res) => {
   const user = req.user; // JWT decoded user
   const query = req.query;
 
-  const result = await ClassRoutineService.getClassScheduleByDay(user, query);
+  const result = await ClassRoutineService.getClassScheduleByDay(user as any, query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -309,9 +309,9 @@ const getHistoryClassListByClassAndSection = catchAsync(
     const schoolId = req.user.mySchoolId; 
 
     const result = await ClassRoutineService.getHistoryClassListOfSpecificClassAndSectionByDate(
-      classId,
-      section,
-      date,
+      classId as string,
+      section as string,
+      date as string,
       schoolId
     );
 
@@ -333,7 +333,7 @@ const getHistoryClassListForSchoolAdminByDate = catchAsync(
 
     const result = await ClassRoutineService.getHistoryClassListForSchoolAdminByDate(
       schoolId,
-      date, 
+      date as string, 
       req.query
     );
 

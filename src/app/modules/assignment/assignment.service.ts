@@ -115,7 +115,7 @@ const getActiveAssignment = async (
   }
 
   if(user.role === USER_ROLE.teacher) {
-    matchStage.teacherId = new mongoose.Types.ObjectId(user.userId)
+    (matchStage as any).teacherId = new mongoose.Types.ObjectId(user.userId)
   }
 
   console.log("matchStage", matchStage);

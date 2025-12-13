@@ -1303,8 +1303,11 @@ const getHistoryClassListOfSpecificClassAndSectionByDate = async (
           },
         },
       },
+
+       // ✅ SORT BY START TIME
+      { $sort: { startTime: 1 } },
     ])
-    .sort({ "startTime": 1 })
+    // .sort({ "startTime": 1 })
     .paginate()
     .execute(ClassRoutine);
 

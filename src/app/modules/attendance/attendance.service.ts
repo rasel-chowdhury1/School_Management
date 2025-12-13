@@ -135,8 +135,8 @@ const createAttendance = async (
     subjectId: payload.subjectId,
     subjectName: payload.subjectName,
 
-    teacherId: payload.teacherId ?? teacher._id,
-    teacherName: payload.teacherName ?? (teacher as any).name,
+    teacherId: (payload as any).teacherId ?? teacher._id,
+    teacherName: (payload as any).teacherName ?? (teacher as any).name,
 
     startTime: payload.startTime,
     endTime: payload.endTime,

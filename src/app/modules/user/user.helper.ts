@@ -43,7 +43,7 @@ export async function createUserWithProfile<T>(
       payload.phoneNumber,
     );
 
-      payload.data.adminPhone = payload.phoneNumber;
+      ( payload.data as any).adminPhone = payload.phoneNumber;
 
   }
 
