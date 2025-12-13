@@ -11,6 +11,9 @@ import { IClassSection, ILevelClassesFlat, TClass } from './class.interface';
 import Class from './class.model';
 import { sanitizeSections } from './class.utils';
 import { generateRoutineForSection } from '../classRoutine/classRoutine.utils';
+import { ClassRoutine } from '../classRoutine/classRoutine.model';
+import Parents from '../parents/parents.model';
+import User from '../user/user.model';
 
 const createClass = async (payload: Partial<TClass>, user: TAuthUser) => {
   const findLevel = await Level.findById(payload.levelId);
@@ -174,10 +177,58 @@ const updateClass = async (id: string, payload: Partial<TClass>) => {
   return result;
 };
 
-const deleteClass = async (id: string) => {
-  const result = await Class.findByIdAndDelete(id);
-  return result;
+// const deleteClass = async (id: string) => {
+//   const result = await Class.findByIdAndDelete(id);
+//   return result;
+// };
+
+
+// when deleting a class delete all the routines with students, parents and users  for that class 
+const deleteClass = async (classId: string) => {
+  // Start a session for transaction
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    // 1️⃣ Delete the class
+    const deletedClass = await Class.findByIdAndDelete(classId, { session });
+    if (!deletedClass) {
+      throw new Error("Class not found");
+    }
+
+    // 2️⃣ Delete class routines
+    await ClassRoutine.deleteMany({ classId: classId }, { session });
+
+    // 3️⃣ Find students of this class
+    const students = await Student.find({ classId: classId }, null, { session });
+    const studentIds = students.map((s) => s._id);
+
+    // 4️⃣ Delete related parents
+    await Parents.deleteMany({ childId: { $in: studentIds } }, { session });
+
+    // 5️⃣ Delete related users (students)
+    await User.deleteMany({ studentId: { $in: studentIds } }, { session });
+
+    // 6️⃣ Delete students
+    await Student.deleteMany({ _id: { $in: studentIds } }, { session });
+
+    // Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    return {
+      success: true,
+      message: "Class and related data deleted successfully",
+      deletedClass,
+    };
+  } catch (error) {
+    // Rollback on error
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
 };
+
 
 const getClassBySchoolId = async (
   id: string,
