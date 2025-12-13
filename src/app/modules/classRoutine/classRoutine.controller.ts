@@ -37,6 +37,8 @@ const getRoutineByToken = catchAsync(async (req: Request, res: Response) => {
   }
   const isExistStudent = await Student.findById(studentId);
 
+  console.log("isExistStudent", isExistStudent);
+
   if(!isExistStudent){
       throw new AppError(httpStatus.BAD_REQUEST, 'student does not exist');
   }
@@ -266,10 +268,12 @@ const getTodayClassListByClassAndSection = catchAsync(async (req, res) => {
 
 const getClassScheduleByDay = catchAsync(async (req, res) => {
 
-  console.log("req.query", req.query);
+
 
   const user = req.user; // JWT decoded user
   const query = req.query;
+
+  console.log(" class schedule query ===>>> ", query);
 
   const result = await ClassRoutineService.getClassScheduleByDay(user as any, query);
 

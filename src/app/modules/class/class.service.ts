@@ -31,6 +31,7 @@ const createClass = async (payload: Partial<TClass>, user: TAuthUser) => {
 };
 
 const createClassWithRoutines = async (payload: Partial<TClass>, user: TAuthUser) => {
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -49,6 +50,10 @@ const createClassWithRoutines = async (payload: Partial<TClass>, user: TAuthUser
 
     // Convert sections to string for Class model
     const sectionString = sections;
+
+
+    const existingClasses = await Class.find({ schoolId, className: payload.className }).session(session);
+    if (existingClasses.length > 0) throw new Error('Class already exists for this level');
 
     // Create Class
     const newClass = await Class.create(

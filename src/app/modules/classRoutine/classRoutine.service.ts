@@ -777,6 +777,7 @@ const getClassScheduleByDay = async (
   user: TAuthUser,
   query: Record<string, unknown>
 ) => {
+  
   if (user.role !== USER_ROLE.student) {
     throw new AppError(httpStatus.FORBIDDEN, "Only students can access this");
   }
@@ -793,6 +794,8 @@ const getClassScheduleByDay = async (
   // -----------------------------
   const student = await StudentService.findStudent(user.studentId);
   if (!student) throw new AppError(404, "Student not found");
+
+  console.log("student ==>>>> ", student);
 
   const matchStage = {
     schoolId: new mongoose.Types.ObjectId(String(user.mySchoolId)),
