@@ -362,7 +362,7 @@ const addOrUpdateManySubjectsInRoutine = async (payload: ManyRoutinePayload) => 
           ...stu,
           classId,
           className,
-          section,
+          section
         },
         {
           role: USER_ROLE.school,

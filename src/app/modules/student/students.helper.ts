@@ -17,18 +17,22 @@ async function createStudentWithProfile(
   payload: any,
   session: mongoose.ClientSession,
 ): Promise<mongoose.Document> {
+
   const findSchoolUser = await User.findOne({
     schoolId: payload.data.schoolId,
   });
 
   if (payload.phoneNumber) {
+
     const uniquePhoneNumber = await UserService.uniquePhoneNumber(
       payload.phoneNumber,
     );
+    
     if (uniquePhoneNumber)
       throw new Error(
         `This ("${payload.phoneNumber}") Phone number already exists`,
       );
+
   }
 
   const [newUser] = await User.create(

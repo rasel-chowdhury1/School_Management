@@ -270,9 +270,6 @@ const getStudentsOfClasses = async (
   const matchConditions: Record<string, any>[] = [
     {
       schoolId: new mongoose.Types.ObjectId(String(findTeacher.schoolId)),
-    },
-    {
-      isTerminated: false
     }
   ];
 
@@ -322,6 +319,8 @@ const getStudentsOfClasses = async (
           studentName: '$user.name',
           userId: '$user._id',
           parentsMessage: 1,
+          isTerminated: 1,
+          summoned: 1,
         },
       },
     ])

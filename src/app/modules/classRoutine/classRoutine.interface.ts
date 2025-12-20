@@ -94,10 +94,10 @@ export interface ManyRoutinePayload {
   }[];
   addedStudents?: {
     name: string;
-    phoneNumber: string;
+    phoneNumber?: string;
     gender: string;
-    fatherPhoneNumber: string;
-    motherPhoneNumber: string;
+    fatherPhoneNumber?: string;
+    motherPhoneNumber?: string;
   }[];
   superVisors?: [{
     teacherId: string;

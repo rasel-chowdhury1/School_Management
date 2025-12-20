@@ -8,6 +8,9 @@ import AppError from '../../utils/AppError';
 import { Request, Response } from 'express';
 
 const createStudent = catchAsync(async (req, res) => {
+  
+   console.log("====== > req.body", req.body);
+
   const result = await StudentService.createStudent(
     req.body,
     req.user as TAuthUser,
@@ -35,7 +38,7 @@ const getAllStudents = catchAsync(async (req, res) => {
 
 
 
-const getAllStudentsListOfSpecificClassIdAndSection = catchAsync(async (req, res) => {
+const getAllStudentListOfSpecificClassIdAndSection = catchAsync(async (req, res) => {
   const { classId, section } = req.query;
 
   // Validate query params
@@ -315,7 +318,7 @@ export const StudentController = {
   getParentsList,
   getParentsDetails,
   createStudentUsingXlsx,
-  getAllStudentsListOfSpecificClassIdAndSection,
+  getAllStudentListOfSpecificClassIdAndSection,
   terminateStudentByTeacher,
   removeTermination,
   summonStudent,

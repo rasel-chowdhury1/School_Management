@@ -48,7 +48,8 @@ router
   .get(
     '/student_list/:attendanceId',
     // auth(USER_ROLE.teacher, USER_ROLE.school, USER_ROLE.manager),
-    AttendanceController.getAttendanceStudentList)
+    AttendanceController.getAttendanceStudentList
+  )
 
     
   .get(

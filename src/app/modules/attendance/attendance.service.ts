@@ -818,7 +818,7 @@ const getAttendanceStudentListWithCounts = async (attendanceId: string) => {
       $match: {
         classId: attendance.classId,
         section: attendance.section,
-        isTerminated: false,
+        // isTerminated: false,
       },
     },
     {
@@ -840,6 +840,8 @@ const getAttendanceStudentListWithCounts = async (attendanceId: string) => {
         _id: 1,
         userId: 1,
         studentName: "$userInfo.name",      // 👈 FETCHED FROM USER MODEL
+        isTerminated: 1,
+        summoned: 1,
         parentsMessage: 1,
         fatherPhoneNumber: 1,
         motherPhoneNumber: 1,
@@ -863,6 +865,8 @@ const getAttendanceStudentListWithCounts = async (attendanceId: string) => {
       fatherPhoneNumber: student.fatherPhoneNumber,
       motherPhoneNumber: student.motherPhoneNumber,
       isAttendance: isPresent,
+      isTerminated: student.isTerminated,
+      summoned: student.summoned,
     };
   });
 

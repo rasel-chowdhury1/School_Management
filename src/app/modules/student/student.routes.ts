@@ -63,7 +63,7 @@ router
   .get(
     '/specefic_student_list',
     auth(USER_ROLE.admin, USER_ROLE.supperAdmin, USER_ROLE.school, USER_ROLE.teacher),
-    StudentController.getAllStudentsListOfSpecificClassIdAndSection,
+    StudentController.getAllStudentListOfSpecificClassIdAndSection,
   )
 
   .get('/my_child', auth(USER_ROLE.parents), StudentController.getMyChildren)

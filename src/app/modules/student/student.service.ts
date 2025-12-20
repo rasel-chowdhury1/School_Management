@@ -29,14 +29,17 @@ import { NOTIFICATION_TYPE } from '../notification/notification.interface';
 import sendNotification from '../../../socket/sendNotification';
 
 const createStudent = async (
-  payload: Partial<TStudent> & { phoneNumber: string; name?: string },
+  payload: Partial<TStudent> & { phoneNumber?: string; name?: string },
   user: TAuthUser | { role: string; schoolId: string },
   mongoSession?: any
 ) => {
+
+  console.log("payload", payload);
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
+    
     if (user.role === USER_ROLE.school) {
       const findSchool = await School.findById(user.schoolId);
       if (!findSchool) throw new Error('School not found');
@@ -48,17 +51,19 @@ const createStudent = async (
       className: payload?.className,
       section: payload?.section,
     } as any;
+
     // Pre-generate all UIDs that might be needed
     const studentUID = await generateUID(generateData);
 
     const student = (await createStudentWithProfile(
-      {
-        phoneNumber: payload.phoneNumber,
-        data: payload,
-        uid: studentUID,
-      },
-      session,
-    )) as any;
+        {
+          phoneNumber: payload.phoneNumber,
+          data: payload,
+          uid: studentUID,
+        },
+        session,
+      )
+    ) as any;
 
     await handleParentUserCreation(
       payload,
@@ -69,6 +74,7 @@ const createStudent = async (
 
     await session.commitTransaction();
     session.endSession();
+
     return student;
   } catch (error) {
     await session.abortTransaction();
@@ -239,6 +245,7 @@ const getAllStudents = async (
 
       {
         $project: {
+          uid: 1,
           student: 1,
           name: 1,
           image: 1,
@@ -264,18 +271,24 @@ const getAllStudentsListOfSpecificClassIdAndSection = async (
   classId: string,
   section: string,
 ) => {
+
+  // console.log({classId, section});
   // Convert classId to ObjectId
   const classObjectId = new mongoose.Types.ObjectId(classId);
 
+  console.log({
+    classId: classObjectId,
+    section,
+  });
   // Query students and populate user info
   const students = await Student.find({
     classId: classObjectId,
     section,
   })
-    .select('userId schoolId classId schoolName className section fatherPhoneNumber motherPhoneNumber parentsMessage isTerminated')
+    .select('userId schoolId classId schoolName className section fatherPhoneNumber motherPhoneNumber parentsMessage isTerminated summoned')
     .populate({
       path: 'userId',
-      select: 'name email', // select only the fields you need
+      select: 'name email uid', // select only the fields you need
     })
     .sort({ createdAt: -1 }); // latest students first
 

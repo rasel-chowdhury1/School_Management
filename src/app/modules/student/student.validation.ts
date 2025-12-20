@@ -9,9 +9,9 @@ const studentSchema = z.object({
     section: z.string().min(1, 'Section is required'),
     schoolName: z.string().min(1, 'School name is required').optional(),
     className: z.string().min(1, 'Class name is required'),
-    fatherPhoneNumber: z.string().min(1, 'Father phone number is required'),
-    motherPhoneNumber: z.string().min(1, 'Mother phone number is required'),
-    phoneNumber: z.string().min(1, 'Phone number is required').optional(),
+    fatherPhoneNumber: z.string().min(1, 'Father phone number is required').optional(),
+    motherPhoneNumber: z.string().min(1, 'Mother phone number is required').optional(),
+    // phoneNumber: z.string().min(1, 'Phone number is required').optional(),
   }),
 });
 

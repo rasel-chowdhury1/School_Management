@@ -55,29 +55,34 @@ const studentSchema = new Schema<TStudent>(
       ref: 'Class',
       required: true,
     },
+
     schoolName: {
       type: String,
       required: true,
       trim: true,
     },
+
     className: {
       type: String,
       required: true,
       trim: true,
     },
+
     section: {
       type: String,
       required: true,
       trim: true,
     },
+    
     fatherPhoneNumber: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     motherPhoneNumber: {
       type: String,
-      required: true,
+      // required: true,
+      default: "",
       trim: true,
     },
     parentsMessage: {

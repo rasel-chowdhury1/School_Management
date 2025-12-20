@@ -3,7 +3,7 @@ import { ClassPeriod } from "../classPeriod/classPeriod.model";
 import { ClassRoutine } from "../classRoutine/classRoutine.model";
 import { ManyRoutinePayload } from "../classRoutine/classRoutine.interface";
 
-export const defaultDays = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+export const defaultDays = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]; // "Saturday",
 
 export const sanitizeSections = (sections: string[] = []) => {
   // 1. Convert to uppercase

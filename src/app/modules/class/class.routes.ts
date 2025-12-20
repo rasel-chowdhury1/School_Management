@@ -62,6 +62,7 @@ route
     ),
     ClassController.getAllClasses,
   )
+
   .get(
     '/school/section/:classId',
     auth(
@@ -73,7 +74,17 @@ route
     ),
     ClassController.getSectionsByClassId,
   )
-  .patch('/:classId', auth(USER_ROLE.school), ClassController.updateClass)
-  .delete('/:classId', auth(USER_ROLE.school), ClassController.deleteClass);
+
+  .patch(
+    '/:classId', 
+    auth(USER_ROLE.school), 
+    ClassController.updateClass
+  )
+
+  .delete(
+    '/:classId', 
+    auth(USER_ROLE.school), 
+    ClassController.deleteClass
+  );
 
 export const ClassRoutes = route;
