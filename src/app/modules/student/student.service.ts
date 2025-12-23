@@ -818,11 +818,15 @@ const getAllTerminatedStudentsBySchool = async (schoolId: string) => {
 
   return terminatedStudents.map((student) => ({
     studentId: student._id,
+    class: student.className,
+    section: student.section,
+    schoolName: student.schoolName,
     studentName: (student.userId as any)?.name || 'N/A',
     terminatedBy: (student.termination?.terminateBy as any)?.name || 'N/A',
     terminatedAt: student.termination?.actionTime || null,
   }));
 };
+
 const getAllSummonedStudentBySchool = async (schoolId: string) => {
   // Convert schoolId to ObjectId
   const schoolObjectId = new mongoose.Types.ObjectId(schoolId);
@@ -845,10 +849,14 @@ const getAllSummonedStudentBySchool = async (schoolId: string) => {
     return {
       studentId: student._id,
       studentName: (student.userId as any)?.name || 'N/A',
+      class: student.className,
+      section: student.section,
+      schoolName: student.schoolName,
       lastSummonedBy: (lastHistory?.summonedBy as any)?.name || 'N/A',
       lastSummonedAt: student.lastSummonedAt || null,
       totalSummoned: student.totalSummoned || 0,
     };
+    
   });
 };
 

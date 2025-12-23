@@ -330,6 +330,9 @@ const getStudentsOfClasses = async (
 
   const meta = await studentQuery.countTotal(Student);
 
+  console.log("result =>>> ", result);
+  console.log("meta =>>> ", meta);  
+
   return { meta, result };
 };
 

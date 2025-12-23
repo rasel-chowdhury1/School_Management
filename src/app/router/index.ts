@@ -30,6 +30,7 @@ import { ClassPeriodRoutes } from '../modules/classPeriod/classPeriod.route';
 import { ClassRoutineRoutes } from '../modules/classRoutine/classRoutine.route';
 import { AssignedSubjectTeacherRoutes } from '../modules/assignedSubjectTeacher/assignedSubjectTeacher.route';
 import { AttendancePeriodRoutes } from '../modules/attendancePeriod/attendancePeriod.route';
+import { staticPageRoutes } from '../modules/staticPage/staticPage.route';
 
 const router = Router();
 
@@ -160,6 +161,10 @@ const routes: TRoutes[] = [
   {
     path: '/static_content',
     route: StaticContentRoutes,
+  },
+  {
+    path: "/static",
+    route: staticPageRoutes
   },
   {
     path: '/feedback',
