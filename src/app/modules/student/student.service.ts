@@ -856,7 +856,7 @@ const getAllSummonedStudentBySchool = async (schoolId: string) => {
       lastSummonedAt: student.lastSummonedAt || null,
       totalSummoned: student.totalSummoned || 0,
     };
-    
+
   });
 };
 
